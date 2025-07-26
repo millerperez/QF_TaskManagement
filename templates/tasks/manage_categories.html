@@ -1,0 +1,29 @@
+{% extends "tasks/base.html" %}
+
+{% block content %}
+<h2>分类管理</h2>
+
+<div class="mb-4">
+    <h3>添加新的分类</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">添加</button>
+    </form>
+</div>
+
+<h3>你的分类</h3>
+<ul class="list-group">
+    {% for category in categories %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ category.name }}
+        <form method="post" action="{% url 'delete_category' category.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-outline-danger">删除</button>
+        </form>
+    </li>
+    {% empty %}
+    <li class="list-group-item">目前还没有分类~</li>
+    {% endfor %}
+</ul>
+{% endblock %}

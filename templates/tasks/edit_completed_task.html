@@ -1,0 +1,12 @@
+{% extends "tasks/base.html" %}
+
+{% block content %}
+<h2>编辑已完成任务</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">保存更改</button>
+    <a href="{% url 'completed_tasks' %}" class="btn btn-secondary">取消</a>
+</form>
+{% endblock %}

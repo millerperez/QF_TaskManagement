@@ -1,0 +1,37 @@
+{% extends "tasks/base.html" %}
+
+{% block content %}
+<h2>回收站</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>任务</th>
+            <th>截止日期</th>
+            <th>行为</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>{{ task.due_date }}</td>
+            <td>
+                <form method="post" action="{% url 'restore_task' task.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-success">恢复</button>
+                </form>
+                <form method="post" action="{% url 'delete_permanently' task.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-danger">永久删除</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">回收站空空如也~</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

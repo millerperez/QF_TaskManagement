@@ -1,0 +1,26 @@
+{% extends "tasks/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="mb-4">注册</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_username" class="form-label">用户名</label>
+                <input type="text" class="form-control" id="id_username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_password1" class="form-label">密码</label>
+                <input type="password" class="form-control" id="id_password1" name="password1" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_password2" class="form-label">再次确认密码</label>
+                <input type="password" class="form-control" id="id_password2" name="password2" required>
+            </div>
+            <button type="submit" class="btn btn-primary">注册</button>
+            <a href="{% url 'login' %}" class="btn btn-link">登录</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

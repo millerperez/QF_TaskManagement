@@ -1,0 +1,64 @@
+{% extends "tasks/base.html" %}
+
+{% block content %}
+<h2>已完成任务</h2>
+
+<div class="mb-4">
+    <form method="get" class="row g-3">
+        <div class="col-md-4">
+            <label for="category" class="form-label">按分类筛选</label>
+            <select id="category" name="category" class="form-select">
+                <option value="">全部分类</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="date" class="form-label">按日期筛选</label>
+            <input type="date" id="date" name="date" class="form-control" value="{{ request.GET.date }}">
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary me-2">筛选</button>
+            <a href="{% url 'export_pdf' %}?category={{ request.GET.category }}&date={{ request.GET.date }}"
+               class="btn btn-success">
+                导出PDF
+            </a>
+        </div>
+    </form>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>任务名称</th>
+            <th>完成日期</th>
+            <th>耗时</th>
+            <th>分类</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>{{ task.completed_date }}</td>
+            <td>{{ task.time_spent|default:"-" }}</td>
+            <td>{{ task.category.name|default:"-" }}</td>
+            <td>
+                <a href="{% url 'edit_completed_task' task.id %}" class="btn btn-sm btn-outline-primary">编辑</a>
+                {% if task.attachment %}
+                <a href="{{ task.attachment.url }}" target="_blank" class="btn btn-sm btn-outline-success">查看附件</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">暂无已完成任务</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
